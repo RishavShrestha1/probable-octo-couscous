@@ -61,6 +61,7 @@ bool loadMedia() {
             success = false;
         }
     }
+
     return success;
 }
 
@@ -86,6 +87,28 @@ int main(int argc, char* argv[]){
                 while(SDL_PollEvent (&e)){
                     if(e.type == SDL_QUIT){
                         quit = true;
+                    }
+                    else if(e.type = SDL_KEYDOWN){
+                        switch(e.key.keysym.sym){
+                            case SDLK_UP:
+                            rect.y += 30;
+                            break;
+
+                            case SDLK_DOWN:
+                            rect.y -= 30;
+                            break;
+
+                            case SDLK_LEFT:
+                            rect.x += 30;
+                            break;
+
+                            case SDLK_RIGHT:
+                            rect.x -= 30;
+                            break;
+
+                            default:
+                            break;
+                        }
                     }
                 }
             }
