@@ -3,7 +3,6 @@
 #include <string>
 
 bool init();
-bool loadMedia();
 void close();
  
 enum class KeyPressSurfaces {
@@ -18,7 +17,7 @@ SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 SDL_Surface* surfaceScreen = NULL;
 //rectange ko specs
-SDL_Rect rect = {320, 210, 200, 200};
+SDL_Rect rect = {320, 210, 80, 80};
 
 SDL_Surface* imageSurface = NULL;
 SDL_Surface* KeyPressSurface[static_cast<int>(KeyPressSurfaces::KEY_PRESS_SURFACE_TOTAL)];
@@ -46,25 +45,6 @@ bool init() {
     return success;
 }
 
-bool loadMedia() {
-    bool success = true;
-    //set drawing color for the backgound ( white)
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    if(SDL_RenderClear(renderer) < 0) {
-        std::cerr << "Unable to clear the old frame! SDL_Error : "<<SDL_GetError() <<std::endl;
-        success = false;
-    } 
-    else {
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-        if(SDL_RenderDrawRect(renderer, &rect) < 0) {
-            std::cerr << "Couldnt Draw the rectangle! SDL_Error : " <<SDL_GetError()<<std::endl;
-            success = false;
-        }
-    }
-
-    return success;
-}
-
 void close() {
     SDL_DestroyWindow(window);
     window = NULL;
@@ -77,10 +57,6 @@ int main(int argc, char* argv[]){
         std::cerr <<"Failed to initialize! SDL_Error : "<<SDL_GetError() <<std::endl;
     }
     else {
-        if(!loadMedia()) {
-            std::cerr << "Failed to load image! SDL_Error : "<<SDL_GetError() <<std::endl;
-        }
-        else{
             SDL_Event e;
             bool quit =false;
             while(quit == false){
@@ -88,22 +64,22 @@ int main(int argc, char* argv[]){
                     if(e.type == SDL_QUIT){
                         quit = true;
                     }
-                    else if(e.type = SDL_KEYDOWN){
+                    else if(e.type == SDL_KEYDOWN){
                         switch(e.key.keysym.sym){
                             case SDLK_UP:
-                            rect.y += 30;
-                            break;
-
-                            case SDLK_DOWN:
                             rect.y -= 30;
                             break;
 
+                            case SDLK_DOWN:
+                            rect.y += 30;
+                            break;
+
                             case SDLK_LEFT:
-                            rect.x += 30;
+                            rect.x -= 30;
                             break;
 
                             case SDLK_RIGHT:
-                            rect.x -= 30;
+                            rect.x += 30;
                             break;
 
                             default:
@@ -111,9 +87,20 @@ int main(int argc, char* argv[]){
                         }
                     }
                 }
+                //set drawing color for the backgound ( white)
+                SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+                if(SDL_RenderClear(renderer) < 0) {
+                    std::cerr << "Unable to clear the old frame! SDL_Error : "<<SDL_GetError() <<std::endl;
+                } 
+                else {
+                    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+                    if(SDL_RenderDrawRect(renderer, &rect) < 0) {
+                    std::cerr << "Couldnt Draw the rectangle! SDL_Error : " <<SDL_GetError()<<std::endl;
+                        }
+                }      
+                SDL_RenderPresent(renderer);
             }
         }
-   }
    close();
    return 0;
 }
