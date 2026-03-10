@@ -1,26 +1,14 @@
-#include <SDL2/SDL.h>
-#include <iostream>
-#include <string>
+#include "entity.h"
 
 bool init();
+bool collisionChecker(SDL_Rect a, SDL_Rect b);
 void close();
  
-enum class KeyPressSurfaces {
-    KEY_PRESS_SURFACE_UP,
-    KEY_PRESS_SURFACE_DOWN,
-    KEY_PRESS_SURFACE_LEFT,
-    KEY_PRESS_SURFACE_RIGHT,
-    KEY_PRESS_SURFACE_TOTAL
-};
-
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 SDL_Surface* surfaceScreen = NULL;
-//rectange ko specs
-SDL_Rect rect = {320, 210, 80, 80};
 
-SDL_Surface* imageSurface = NULL;
-SDL_Surface* KeyPressSurface[static_cast<int>(KeyPressSurfaces::KEY_PRESS_SURFACE_TOTAL)];
+SDL_Rect rect = {320, 210, 80, 80};
 
 bool init() {
     const int SCREEN_WIDTH = 640;
@@ -43,6 +31,24 @@ bool init() {
         }
     }
     return success;
+}
+
+bool collisionChecker(SDL_Rect a, SDL_Rect b) {
+
+    if(a.x > b.x + b.w) {
+        return false; //no collision
+    }
+    if(b.x > a.x + a.w) {
+        return false;
+    }
+    if(a.y > b.y + b.h) {
+        return false;
+    }
+    if(b.y > a.y + a.h) {
+        return false;
+    }
+
+    return true;
 }
 
 void close() {
@@ -87,17 +93,12 @@ int main(int argc, char* argv[]){
                         }
                     }
                 }
-                //set drawing color for the backgound ( white)
                 SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-                if(SDL_RenderClear(renderer) < 0) {
-                    std::cerr << "Unable to clear the old frame! SDL_Error : "<<SDL_GetError() <<std::endl;
-                } 
-                else {
-                    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-                    if(SDL_RenderDrawRect(renderer, &rect) < 0) {
-                    std::cerr << "Couldnt Draw the rectangle! SDL_Error : " <<SDL_GetError()<<std::endl;
-                        }
-                }      
+                SDL_RenderClear(renderer);
+
+                SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+                SDL_RenderDrawRect(renderer, &rect);
+
                 SDL_RenderPresent(renderer);
             }
         }
