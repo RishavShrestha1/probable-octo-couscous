@@ -11,7 +11,7 @@ class entity{
 
     virtual void update() = 0;
     virtual bool checkCollision(entity& otherEntity);
-    virtual void render(SDL_Renderer* renderer) = 0; 
+    virtual bool render(SDL_Renderer* renderer) = 0; 
     SDL_Rect getRect();
 
     virtual ~entity(){
@@ -22,7 +22,7 @@ class entity{
 class Player: public entity{
 
     public:
-    Player(int x, int y, int w, int h): entity(x,  y,  w,  h){}
+    Player(int x, int y, int h, int w): entity(x,  y,  h,  w){}
 
     void update() override{
 
@@ -48,15 +48,17 @@ class Player: public entity{
         return true;
     }
 
-    void render(SDL_Renderer* renderer) {
+    bool render(SDL_Renderer* renderer) override {
+        SDL_SetRenderDrawColor(renderer, 0,0, 255, 255);
+        SDL_RenderClear(renderer);
+        return true;
     }
-
 
 };
 
 class Enemy: public entity{
     public:
-    Enemy(int x, int y , int w, int h): entity(x, y, w ,h){}
+    Enemy(int x, int y , int h, int w): entity(x, y, h, w){}
 
     void update() override{}
     bool checkCollision(entity& otherEntity) {
@@ -79,8 +81,11 @@ class Enemy: public entity{
         return true;
     }
  
-    void render(SDL_Renderer* renderer){
-
+    bool render(SDL_Renderer* renderer) override {
+        SDL_SetRenderDrawColor(renderer, 255, 0 ,255, 0);
+        SDL_RenderClear(renderer);
+        return true;
     }
+
 };
     

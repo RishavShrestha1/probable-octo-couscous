@@ -81,14 +81,11 @@ int main(int argc, char* argv[]){
                 if(player.checkCollision(enemy)) {
                     std::cout << "they should bounce back or somehting..." <<std::endl;
                 }
-                // SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-                // SDL_RenderClear(renderer);
+                SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+                SDL_RenderClear(renderer);
 
                 player.render(renderer);
                 enemy.render(renderer);
-
-                // SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-                // SDL_RenderDrawRect(renderer, &rect);
 
                 SDL_RenderPresent(renderer);
             }
