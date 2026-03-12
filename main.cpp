@@ -7,7 +7,6 @@ SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 SDL_Surface* surfaceScreen = NULL;
 
-SDL_Rect rect = {320, 210, 80, 80};
 Player player(320, 210, 80, 80);
 Enemy enemy(330, 220, 90, 90);
 
@@ -57,19 +56,19 @@ int main(int argc, char* argv[]){
                     else if(e.type == SDL_KEYDOWN){
                         switch(e.key.keysym.sym){
                             case SDLK_UP:
-                            rect.y -= 30;
+                            player.setPosition(player.getRect().x, player.getRect().y - 30);
                             break;
 
                             case SDLK_DOWN:
-                            rect.y += 30;
+                            player.setPosition(player.getRect().x, player.getRect().y + 30);
                             break;
 
                             case SDLK_LEFT:
-                            rect.x -= 30;
+                            player.setPosition(player.getRect().x - 30, player.getRect().y);
                             break;
 
                             case SDLK_RIGHT:
-                            rect.x += 30;
+                            player.setPosition(player.getRect().x + 30, player.getRect().y);
                             break;
 
                             default:

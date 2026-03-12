@@ -12,7 +12,7 @@ class entity{
     virtual void update() = 0;
     virtual bool checkCollision(entity& otherEntity);
     virtual bool render(SDL_Renderer* renderer) = 0; 
-    SDL_Rect getRect();
+    SDL_Rect getRect(){return rect;}
 
     virtual ~entity(){
         std::cout << "entity destructor called" <<std::endl;
@@ -24,9 +24,7 @@ class Player: public entity{
     public:
     Player(int x, int y, int h, int w): entity(x,  y,  h,  w){}
 
-    void update() override{
-
-    }
+    void update() override{}
      
     bool checkCollision(entity& otherEntity) {
         SDL_Rect otherRect = otherEntity.getRect();
@@ -50,8 +48,13 @@ class Player: public entity{
 
     bool render(SDL_Renderer* renderer) override {
         SDL_SetRenderDrawColor(renderer, 0,0, 255, 255);
-        SDL_RenderClear(renderer);
+        SDL_RenderDrawRect(renderer, &rect);
         return true;
+    }
+    
+    void setPosition(int x, int y) {
+        rect.x = x;
+        rect.y = y;
     }
 
 };
@@ -83,7 +86,7 @@ class Enemy: public entity{
  
     bool render(SDL_Renderer* renderer) override {
         SDL_SetRenderDrawColor(renderer, 255, 0 ,255, 0);
-        SDL_RenderClear(renderer);
+        SDL_RenderDrawRect(renderer, &rect);
         return true;
     }
 
