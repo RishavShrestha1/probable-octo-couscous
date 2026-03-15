@@ -1,14 +1,44 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 
-enum class RectSides{
-    rect.y,
-    rect.x,
-    rect.x + rect.w,
-    rect.y + rect.h
+enum class collisionSides{
+    TOP,
+    BOTTOM,
+    LEFT,
+    RIGHT,
+    NONE
 };
 
-class entity{
+collisionSides getCollidedSides(SDL_Rect a, SDL_Rect b) {
+
+    // a-bottom-collision
+    if(a.y < b.y && a.y + a.h >= b.y){
+        return collisionSides::BOTTOM;
+    }
+    // a-top-collision
+    if(b.y < a.y && a.y <= b.y + b.h) {
+        return collisionSides::TOP;
+    }
+    // a-right-collisino
+    if(a.x + a.w >= b.x && a.x < b.x + b.w){
+        return collisionSides::RIGHT;
+    }
+    //a-left-collision
+    if(a.x + a.w > b.x && a.x <= b.x + b.w){
+        return collisionSides::LEFT;
+    }
+
+    return collisionSides::NONE;
+
+} 
+
+std::ostream& operator<<(std::ostream& out, const collisionSides side) {
+    out << side;
+    return out;
+
+}
+
+class  entity{
     protected:
     SDL_Rect rect;
     int velo_x, velo_y;
