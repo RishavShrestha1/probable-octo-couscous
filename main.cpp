@@ -70,34 +70,35 @@ int main(int argc, char* argv[]){
                             case SDLK_RIGHT:
                             player.setPosition(player.getRect().x + 30, player.getRect().y);
                             break;
-
-                            case SDLK_w:
-                            enemy.setPosition(enemy.getRect().x, player.getRect().y - 30);
-                            break;
-                            
-                            case SDLK_s:
-                            enemy.setPosition(enemy.getRect().x, enemy.getRect().y + 30);
-                            break;
-
-                            case SDLK_a:
-                            enemy.setPosition(enemy.getRect().x - 30, enemy.getRect().y);
-                            break;
-
-                            case SDLK_d:
-                            enemy.setPosition(enemy.getRect().x + 30, enemy.getRect().y);
-                            break;
-
-                            default:
-                            break;
                         }
-                }
+                    }
             }
+
                 std::cout << "Player x : "<<player.xPosition() <<" y: "<<player.yPosition()<<std::endl;
 
                 collisionSides playerCollision = getCollidedSides(player.getRect(), enemy.getRect());
                 if(player.checkCollision(enemy)) {
-                    std::cout << "Collision from : " << playerCollision;
+                    std::cout << "Collision from : " << playerCollision<<std::endl;
+                    switch(playerCollision){
+
+                        case collisionSides::TOP:
+                            enemy.setPosition(enemy.getRect().x, enemy.getRect().y - 50);
+                            break;
+                        
+                        case collisionSides::BOTTOM:
+                            enemy.setPosition(enemy.getRect().x, enemy.getRect().y + 50);
+                            break;
+                        
+                        case collisionSides::LEFT:
+                            enemy.setPosition(enemy.getRect().x - 50, enemy.getRect().y);
+                            break;
+                        
+                        case collisionSides::RIGHT:
+                            enemy.setPosition(enemy.getRect().x + 50, enemy.getRect().y);
+                            break;
+                    }
                 }
+
                 SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
                 SDL_RenderClear(renderer);
 

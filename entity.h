@@ -12,6 +12,7 @@ enum class collisionSides{
 collisionSides getCollidedSides(SDL_Rect a, SDL_Rect b);
 std::ostream& operator<<(std::ostream& out, const collisionSides sides);
 
+
 class  entity{
     protected:
     SDL_Rect rect;

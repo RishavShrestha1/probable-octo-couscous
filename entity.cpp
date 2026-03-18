@@ -72,5 +72,3 @@ std::ostream& operator<<(std::ostream& out, const collisionSides sides) {
     }
     return out;
 }
-
-
