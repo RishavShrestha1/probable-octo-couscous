@@ -121,4 +121,25 @@ class Enemy: public entity{
         return true;
     }
 };
+
+class Dot{
+    private:
+    int mPosX, mPosY;
+    // x velo and y velo 
+    int mVelX, mVelY;
+
+    public:
+    const int DOT_WIDTH = 20;
+    const int DOT_HEIGHT = 20;
+
+    //max axis velo of the dot
+    const int DOT_VELOCITY = 10;
+
+    Dot();
+
+    void HandleEvent(SDL_Event& e);
+    void move();
+    void render(SDL_Renderer* renderer);
+
+};
     
