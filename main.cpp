@@ -9,6 +9,7 @@ SDL_Surface* surfaceScreen = NULL;
 
 Player player(320, 210, 80, 80);
 Enemy enemy(230, 220, 90, 90);
+Dot dot();
 
 bool init() {
     const int SCREEN_WIDTH = 640;
@@ -22,7 +23,7 @@ bool init() {
     else {
         window = SDL_CreateWindow("Base Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
         renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-        if(window== NULL && renderer == NULL) {
+        if(window== NULL || renderer == NULL) {
             std::cerr << "Unable to create window and/or renderer! SDL_Error : "<<SDL_GetError()<<std::endl; 
             success = false;
         }
@@ -41,7 +42,7 @@ void close() {
 }
 
 int main(int argc, char* argv[]){
-    bool hasCollided = false;
+    bool isColliding = false;
     
     if(!init()){
         std::cerr <<"Failed to initialize! SDL_Error : "<<SDL_GetError() <<std::endl;
@@ -49,6 +50,7 @@ int main(int argc, char* argv[]){
     else {
             SDL_Event e;
             bool quit =false;
+            Dot dot;
             while(quit == false){
                 while(SDL_PollEvent (&e)){
                     if(e.type == SDL_QUIT){
@@ -57,28 +59,29 @@ int main(int argc, char* argv[]){
                     else if(e.type == SDL_KEYDOWN){
                         switch(e.key.keysym.sym){
                             case SDLK_UP:
-                            player.setPosition(player.getRect().x, player.getRect().y - 30);
+                            player.setPosition(player.getRect().x, player.getRect().y - MOV_VELOCITY);
                             break;
 
                             case SDLK_DOWN:
-                            player.setPosition(player.getRect().x, player.getRect().y + 30);
+                            player.setPosition(player.getRect().x, player.getRect().y + MOV_VELOCITY);
                             break;
 
                             case SDLK_LEFT:
-                            player.setPosition(player.getRect().x - 30, player.getRect().y);
+                            player.setPosition(player.getRect().x - MOV_VELOCITY, player.getRect().y);
                             break;
 
                             case SDLK_RIGHT:
-                            player.setPosition(player.getRect().x + 30, player.getRect().y);
+                            player.setPosition(player.getRect().x + MOV_VELOCITY, player.getRect().y);
                             break;
                         }
                     }
+                    dot.HandleEvent(e);
             }
 
                 std::cout << "Player x : "<<player.xPosition() <<" y: "<<player.yPosition()<<std::endl;
                 
                 if(player.checkCollision(enemy)) {
-                    if(!hasCollided){
+                    if(!isColliding){
                     collisionSides playerCollision = getCollidedSides(player.getRect(), enemy.getRect());
 
                     switch(playerCollision){
@@ -86,6 +89,7 @@ int main(int argc, char* argv[]){
                         case collisionSides::TOP:
                             enemy.setPosition(enemy.getRect().x, enemy.getRect().y - 40);
                             break;
+                            //TODO => SET A VARIABEL TO FOR '40'. WHAT IS 40?
                     
                         case collisionSides::BOTTOM:
                             enemy.setPosition(enemy.getRect().x, enemy.getRect().y + 40);
@@ -99,19 +103,21 @@ int main(int argc, char* argv[]){
                             enemy.setPosition(enemy.getRect().x + 40, enemy.getRect().y);
                             break;
                     }
-                    hasCollided = true;
+                    isColliding = true;
                 }
             }
             else {
-                hasCollided = false; // no longer collidign
+                isColliding = false;
 
             }
+                dot.move();
 
                 SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
                 SDL_RenderClear(renderer);
 
                 player.render(renderer);
                 enemy.render(renderer);
+                dot.render(renderer);
 
                 SDL_RenderPresent(renderer);
             }

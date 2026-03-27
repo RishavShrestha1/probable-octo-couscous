@@ -14,7 +14,7 @@ Dot::Dot() {
 
 void Dot::HandleEvent(SDL_Event& e) {
     if(e.type == SDL_KEYDOWN && e.key.repeat == 0) {
-        //adjust the velo of teh dot
+
         switch(e.key.keysym.sym){
             case SDLK_UP: mVelY -= DOT_VELOCITY; break;
             case SDLK_DOWN: mVelY += DOT_VELOCITY; break;
@@ -24,10 +24,10 @@ void Dot::HandleEvent(SDL_Event& e) {
     }
     else if(e.type == SDL_KEYUP && e.key.repeat == 0) {
         switch(e.key.keysym.sym){
-            case SDLK_UP: mVelY -= DOT_VELOCITY; break;
-            case SDLK_DOWN: mVelY += DOT_VELOCITY; break;
-            case SDLK_LEFT: mVelX -= DOT_VELOCITY; break;
-            case SDLK_RIGHT: mVelX += DOT_VELOCITY; break;
+            case SDLK_UP: mVelY += DOT_VELOCITY; break;
+            case SDLK_DOWN: mVelY -= DOT_VELOCITY; break;
+            case SDLK_LEFT: mVelX += DOT_VELOCITY; break;
+            case SDLK_RIGHT: mVelX -= DOT_VELOCITY; break;
         }
     }
 }
@@ -35,8 +35,8 @@ void Dot::HandleEvent(SDL_Event& e) {
 void Dot::move(){
     mPosX += mVelX;
 
-    if((mPosX < 0) || (mPosX + DOT_WIDTH > SCREEN_HEIGHT)) {
-        mPosX -= mVelY;
+    if((mPosX < 0) || (mPosX + DOT_WIDTH > SCREEN_WIDTH)) {
+        mPosX -= mVelX;
     }
 }
 
