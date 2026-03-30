@@ -8,8 +8,6 @@ SDL_Renderer* renderer = NULL;
 SDL_Surface* surfaceScreen = NULL;
 
 Player player(320, 210, 80, 80);
-Enemy enemy(230, 220, 90, 90);
-Dot dot();
 
 bool init() {
     const int SCREEN_WIDTH = 640;
@@ -80,44 +78,43 @@ int main(int argc, char* argv[]){
 
                 std::cout << "Player x : "<<player.xPosition() <<" y: "<<player.yPosition()<<std::endl;
                 
-                if(player.checkCollision(enemy)) {
-                    if(!isColliding){
-                    collisionSides playerCollision = getCollidedSides(player.getRect(), enemy.getRect());
+            //     if(player.checkCollision(enemy)) {
+            //         if(!isColliding){
+            //         collisionSides playerCollision = getCollidedSides(player.getRect(), enemy.getRect());
 
-                    switch(playerCollision){
+            //         switch(playerCollision){
 
-                        case collisionSides::TOP:
-                            enemy.setPosition(enemy.getRect().x, enemy.getRect().y - 40);
-                            break;
-                            //TODO => SET A VARIABEL TO FOR '40'. WHAT IS 40?
+            //             case collisionSides::TOP:
+            //                 enemy.setPosition(enemy.getRect().x, enemy.getRect().y - 40);
+            //                 break;
+            //                 //TODO => SET A VARIABEL TO FOR '40'. WHAT IS 40?
                     
-                        case collisionSides::BOTTOM:
-                            enemy.setPosition(enemy.getRect().x, enemy.getRect().y + 40);
-                            break;
+            //             case collisionSides::BOTTOM:
+            //                 enemy.setPosition(enemy.getRect().x, enemy.getRect().y + 40);
+            //                 break;
                         
-                        case collisionSides::LEFT:
-                            enemy.setPosition(enemy.getRect().x - 40, enemy.getRect().y);
-                            break;
+            //             case collisionSides::LEFT:
+            //                 enemy.setPosition(enemy.getRect().x - 40, enemy.getRect().y);
+            //                 break;
                         
-                        case collisionSides::RIGHT:
-                            enemy.setPosition(enemy.getRect().x + 40, enemy.getRect().y);
-                            break;
-                    }
-                    isColliding = true;
-                }
-            }
-            else {
-                isColliding = false;
+            //             case collisionSides::RIGHT:
+            //                 enemy.setPosition(enemy.getRect().x + 40, enemy.getRect().y);
+            //                 break;
+            //         }
+            //         isColliding = true;
+            //     }
+            // }
+            // else {
+            //     isColliding = false;
 
-            }
-                dot.move();
-
+            // }
                 SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
                 SDL_RenderClear(renderer);
 
                 player.render(renderer);
-                enemy.render(renderer);
                 dot.render(renderer);
+
+                dot.move();
 
                 SDL_RenderPresent(renderer);
             }
