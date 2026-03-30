@@ -34,12 +34,18 @@ void Dot::HandleEvent(SDL_Event& e) {
 
 void Dot::move(){
     mPosX += mVelX;
-
     if((mPosX < 0) || (mPosX + DOT_WIDTH > SCREEN_WIDTH)) {
         mPosX -= mVelX;
+    }
+
+    mPosY += mVelY;
+    if((mPosY < 0) || (mPosY + DOT_WIDTH > SCREEN_HEIGHT)) {
+        mPosY -= mVelY;
     }
 }
 
 void Dot::render(SDL_Renderer* renderer) {
-    SDL_RenderDrawPoint(renderer, mPosX, mPosY);
+    SDL_Rect dotRect = {mPosX, mPosY, 10, 10}; 
+    SDL_SetRenderDrawColor(renderer, 255, 0 , 0 , 255);
+    SDL_RenderFillRect(renderer, &dotRect);
 }
