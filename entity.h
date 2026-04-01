@@ -1,6 +1,8 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 
+const int MOV_VELOCITY = 20;
+
 enum class collisionSides{
     TOP,
     BOTTOM,
@@ -19,6 +21,7 @@ class  entity{
     int velo_x, velo_y;
 
     public:
+    entity(){}
     entity(int x, int y, int h, int w);
 
     virtual void update() = 0;
@@ -122,24 +125,23 @@ class Enemy: public entity{
     }
 };
 
-class Dot{
+class Dot : public entity{
     private:
     int mPosX, mPosY;
-    // x velo and y velo 
     int mVelX, mVelY;
 
     public:
     const int DOT_WIDTH = 20;
     const int DOT_HEIGHT = 20;
 
-    //max axis velo of the dot
     const int DOT_VELOCITY = 10;
 
     Dot();
 
+    void update() override;
     void HandleEvent(SDL_Event& e);
     void move();
-    void render(SDL_Renderer* renderer);
+    bool render(SDL_Renderer* renderer) override;
 
 };
     

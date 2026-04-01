@@ -44,8 +44,11 @@ void Dot::move(){
     }
 }
 
-void Dot::render(SDL_Renderer* renderer) {
+void Dot::update(){}
+
+bool Dot::render(SDL_Renderer* renderer) {
     SDL_Rect dotRect = {mPosX, mPosY, 10, 10}; 
     SDL_SetRenderDrawColor(renderer, 255, 0 , 0 , 255);
     SDL_RenderFillRect(renderer, &dotRect);
+    return true;
 }
